@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\abhi5\Documents\GitHub\Fake_News_Detection\.venv"
+VIRTUAL_ENV="C:\Users\ruchit\Documents\GitHub\Fake_News_Detection\.venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

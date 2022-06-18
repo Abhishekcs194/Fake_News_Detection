@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\abhi5\Documents\GitHub\Fake_News_Detection\.venv
+set VIRTUAL_ENV=C:\Users\ruchit\Documents\GitHub\Fake_News_Detection\.venv
 
 if not defined PROMPT set PROMPT=$P$G
 

@@ -10,6 +10,7 @@ from sklearn import feature_extraction, linear_model, model_selection, preproces
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
+from PIL import Image
 
 fake = pd.read_csv("data/Fake.csv")
 true = pd.read_csv("data/True.csv")
@@ -73,7 +74,7 @@ data.head()
 
 # How many articles per subject?
 print(data.groupby(['subject'])['text'].count())
-data.groupby(['subject'])['text'].count().plot(kind="bar")
+data.groupby(['subject'])['text'].count().plot(kind="pie")
 plt.show()
 
 # How many fake and real articles?
@@ -82,18 +83,24 @@ data.groupby(['target'])['text'].count().plot(kind="bar")
 plt.show()
 
 # Word cloud for fake news
-from wordcloud import WordCloud
+from wordcloud import WordCloud ,ImageColorGenerator
 
 fake_data = data[data["target"] == "fake"]
 all_words = ' '.join([text for text in fake_data.text])
 
+lies= np.array(Image.open("data/lies.png"))
+
 wordcloud = WordCloud(width= 900, height= 600,
                           max_font_size = 110,
+                          background_color='black', colormap='Set2',
+                          mask=lies,
                           collocations = False).generate(all_words)
 
 plt.figure(figsize=(10,7))
+image_colors = ImageColorGenerator(lies)
 plt.imshow(wordcloud, interpolation='bilinear')
 plt.axis("off")
+plt.savefig("lies.png", format="png")
 plt.show()
 
 # Word cloud for real news
@@ -102,13 +109,19 @@ from wordcloud import WordCloud
 real_data = data[data["target"] == "true"]
 all_words = ' '.join([text for text in real_data.text])
 
+truth = np.array(Image.open("data/truth.png"))
+
 wordcloud = WordCloud(width= 900, height= 600,
                           max_font_size = 110,
+                          background_color='black', colormap='Set2',
+                          mask=truth,
                           collocations = False).generate(all_words)
 
 plt.figure(figsize=(10,7))
+image_colors = ImageColorGenerator(truth)
 plt.imshow(wordcloud, interpolation='bilinear')
 plt.axis("off")
+plt.savefig("truth.png", format="png")
 plt.show()
 
 # Most frequent words counter (Code adapted from https://www.kaggle.com/rodolfoluna/fake-news-detector)   
@@ -124,7 +137,7 @@ def counter(text, column_text, quantity):
                                    "Frequency": list(frequency.values())})
     df_frequency = df_frequency.nlargest(columns = "Frequency", n = quantity)
     plt.figure(figsize=(12,8))
-    ax = sns.barplot(data = df_frequency, x = "Word", y = "Frequency", color = 'blue')
+    ax = sns.barplot(data = df_frequency, x = "Word", y = "Frequency")
     ax.set(ylabel = "Count")
     plt.xticks(rotation='vertical')
     plt.show()
