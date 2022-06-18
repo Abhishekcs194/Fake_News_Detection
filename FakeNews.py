@@ -87,7 +87,7 @@ from wordcloud import WordCloud
 fake_data = data[data["target"] == "fake"]
 all_words = ' '.join([text for text in fake_data.text])
 
-wordcloud = WordCloud(width= 800, height= 500,
+wordcloud = WordCloud(width= 900, height= 600,
                           max_font_size = 110,
                           collocations = False).generate(all_words)
 
@@ -100,9 +100,9 @@ plt.show()
 from wordcloud import WordCloud
 
 real_data = data[data["target"] == "true"]
-all_words = ' '.join([text for text in fake_data.text])
+all_words = ' '.join([text for text in real_data.text])
 
-wordcloud = WordCloud(width= 800, height= 500,
+wordcloud = WordCloud(width= 900, height= 600,
                           max_font_size = 110,
                           collocations = False).generate(all_words)
 
