@@ -3,6 +3,7 @@ from os import name
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import pylab
 import seaborn as sns 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
@@ -75,11 +76,16 @@ data.head()
 # How many articles per subject?
 print(data.groupby(['subject'])['text'].count())
 data.groupby(['subject'])['text'].count().plot(kind="pie")
+plt.title("Articles per subject")
+plt.gcf().canvas.set_window_title('Articles per subject')
 plt.show()
 
 # How many fake and real articles?
 print(data.groupby(['target'])['text'].count())
 data.groupby(['target'])['text'].count().plot(kind="bar")
+plt.title("Fake vs Real Articles")
+plt.gcf().canvas.set_window_title('Fake vs Real Articles')
+
 plt.show()
 
 # Word cloud for fake news
@@ -96,8 +102,8 @@ wordcloud = WordCloud(width= 900, height= 600,
                           mask=lies,
                           collocations = False).generate(all_words)
 
-plt.figure(figsize=(10,7))
 image_colors = ImageColorGenerator(lies)
+plt.figure("Fake WordCloud" ,figsize=(10,7))
 plt.imshow(wordcloud, interpolation='bilinear')
 plt.axis("off")
 plt.savefig("lies.png", format="png")
@@ -117,8 +123,9 @@ wordcloud = WordCloud(width= 900, height= 600,
                           mask=truth,
                           collocations = False).generate(all_words)
 
-plt.figure(figsize=(10,7))
+
 image_colors = ImageColorGenerator(truth)
+plt.figure("Real WordCloud",figsize=(10,7))
 plt.imshow(wordcloud, interpolation='bilinear')
 plt.axis("off")
 plt.savefig("truth.png", format="png")
@@ -136,8 +143,9 @@ def counter(text, column_text, quantity):
     df_frequency = pd.DataFrame({"Word": list(frequency.keys()),
                                    "Frequency": list(frequency.values())})
     df_frequency = df_frequency.nlargest(columns = "Frequency", n = quantity)
-    plt.figure(figsize=(12,8))
+
     ax = sns.barplot(data = df_frequency, x = "Word", y = "Frequency")
+    plt.gcf().canvas.set_window_title('Frequent Word Counter')
     ax.set(ylabel = "Count")
     plt.xticks(rotation='vertical')
     plt.show()
@@ -159,6 +167,7 @@ def plot_confusion_matrix(cm, classes,
     
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
     plt.title(title)
+
     plt.colorbar()
     tick_marks = np.arange(len(classes))
     plt.xticks(tick_marks, classes, rotation=45)
@@ -179,6 +188,7 @@ def plot_confusion_matrix(cm, classes,
     plt.tight_layout()
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
+    plt.gcf().canvas.set_window_title('Confusion Matrix')
     plt.show()
 
     # Split the data
@@ -232,4 +242,5 @@ print("accuracy: {}%".format(round(accuracy_score(y_test, prediction)*100,2)))
 
 cm = metrics.confusion_matrix(y_test, prediction)
 plot_confusion_matrix(cm, classes=['Fake', 'Real'])
+plt.gcf().canvas.set_window_title('Confusion Matrix')
 plt.show()
